@@ -91,6 +91,7 @@ def counting_students():
 	for link in range(len(semester_links)):
 		page = requests.get(semester_links[link])
 		result_dict = json.loads(page.text)
+		total_students = 0
 
 		counting_dict = {}
 
@@ -98,12 +99,14 @@ def counting_students():
 			counting_dict[x]=0
 
 		for x in result_dict:
-			counting_dict[x["DISPLAY_KEY"][:4]]+=(int(result_dict[0]["SEATS"][-1])-int(result_dict[0]["SEATS"][0]))
+			counting_dict[x["DISPLAY_KEY"][:4]]+=int(result_dict[0]["SEATS"][-1])
+			total_students+=int(result_dict[0]["SEATS"][-1])
+
 
 		print("Year: %s, %s semester" % (result_dict[0]["TERM_CODE"][:4], result_dict[0]["TERM_CODE"][-1]))
 		print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
+		print("Total enrollment in all classes: " + str(total_students))
 		print()
-
 
 
 #counting_classes()

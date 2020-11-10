@@ -66,7 +66,7 @@ department_dict = {
 	"ROLA": "Romance Languages and Literatures"
 }
 
-def printingValues(year):
+def print_classes(year):
 	test_reading = json.loads(open("Database/"+year, "r").read())
 
 	counting_dict = {}
@@ -80,6 +80,23 @@ def printingValues(year):
 	#print("Total classes: " + str(test_reading['totalCount']))
 	print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
 
+
+def print_students(year):
+	test_reading = json.loads(open("Database/"+year+".json", "r").read())
+	total_students = 0
+	counting_dict = {}
+	for x in department_dict:
+		counting_dict[x]=0
+
+	for x in test_reading['data']:
+		counting_dict[x["subject"]]+=test_reading['data'][0]['enrollment']
+		total_students+=test_reading['data'][0]['enrollment']
+
+	print(test_reading['data'][0]['termDesc']+"\n")
+	print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
+	print("Total enrollment in all classes: " + str(total_students))
+
+#print_students("199901")
 
 
 
