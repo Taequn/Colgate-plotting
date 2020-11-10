@@ -63,7 +63,7 @@ department_dict = {
 	"LCTL": "Less Commonly Taught Languages"
 }
 
-semester_links = open("colgate_links.txt", "r").read()
+semester_links = open("colgate_links.csv", "r").read()
 semester_links = semester_links.split(";")
 
 
