@@ -66,25 +66,49 @@ department_dict = {
 semester_links = open("colgate_links.csv", "r").read()
 semester_links = semester_links.split(";")
 
-#printing classes for each semester through Fall 2015 to Spring 2021
+#prints classes for each semester through Fall 2015 to Spring 2021
+def counting_classes():
+	for link in range(len(semester_links)):
+		page = requests.get(semester_links[link])
+		result_dict = json.loads(page.text)
+		counting_dict = {}
 
-for link in range(len(semester_links)):
-	page = requests.get(semester_links[link])
-	result_dict = json.loads(page.text)
-	counting_dict = {}
+		for x in department_dict:
+			counting_dict[x]=0
 
-	for x in department_dict:
-		counting_dict[x]=0
+		for x in result_dict:
+			counting_dict[x["DISPLAY_KEY"][:4]]+=1
 
-	for x in result_dict:
-		counting_dict[x["DISPLAY_KEY"][:4]]+=1
+		counting_dict["Year"]=int(result_dict[0]["TERM_CODE"][:4])
+		counting_dict["Semester"]=int(result_dict[0]["TERM_CODE"][-1])
 
-	counting_dict["Year"]=int(result_dict[0]["TERM_CODE"][:4])
-	counting_dict["Semester"]=int(result_dict[0]["TERM_CODE"][-1])
+		print("Year: %s, %s semester" % (result_dict[0]["TERM_CODE"][:4], result_dict[0]["TERM_CODE"][-1]))
+		print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
+		print()
 
-	print("Year: %s, %s semester" % (result_dict[0]["TERM_CODE"][:4], result_dict[0]["TERM_CODE"][-1]))
-	print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
-	print()
+#prints number of students in each department through Fall 2015 to Spring 2021
+def counting_students():
+	for link in range(len(semester_links)):
+		page = requests.get(semester_links[link])
+		result_dict = json.loads(page.text)
+
+		counting_dict = {}
+
+		for x in department_dict:
+			counting_dict[x]=0
+
+		for x in result_dict:
+			counting_dict[x["DISPLAY_KEY"][:4]]+=(int(result_dict[0]["SEATS"][-1])-int(result_dict[0]["SEATS"][0]))
+
+		print("Year: %s, %s semester" % (result_dict[0]["TERM_CODE"][:4], result_dict[0]["TERM_CODE"][-1]))
+		print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
+		print()
+
+
+
+#counting_classes()
+#counting_students()
+
 
 
 
