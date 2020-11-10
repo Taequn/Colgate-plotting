@@ -63,19 +63,9 @@ department_dict = {
 	"LCTL": "Less Commonly Taught Languages"
 }
 
-semester_links=["https://api.colgate.edu/v1/courses/search?keyword=&termCode=201501&coreArea=&inquiryArea=&meetTimeMorning=&meetTimeAfternoon=&meetTimeEvening=&openCoursesOnly=",
-"https://api.colgate.edu/v1/courses/search?keyword=&termCode=201502&coreArea=&inquiryArea=&meetTimeMorning=&meetTimeAfternoon=&meetTimeEvening=&openCoursesOnly=",
-"https://api.colgate.edu/v1/courses/search?keyword=&termCode=201601&coreArea=&inquiryArea=&meetTimeMorning=&meetTimeAfternoon=&meetTimeEvening=&openCoursesOnly=",
-"https://api.colgate.edu/v1/courses/search?keyword=&termCode=201602&coreArea=&inquiryArea=&meetTimeMorning=&meetTimeAfternoon=&meetTimeEvening=&openCoursesOnly=",
-"https://api.colgate.edu/v1/courses/search?keyword=&termCode=201701&coreArea=&inquiryArea=&meetTimeMorning=&meetTimeAfternoon=&meetTimeEvening=&openCoursesOnly=",
-"https://api.colgate.edu/v1/courses/search?keyword=&termCode=201702&coreArea=&inquiryArea=&meetTimeMorning=&meetTimeAfternoon=&meetTimeEvening=&openCoursesOnly=",
-"https://api.colgate.edu/v1/courses/search?keyword=&termCode=201801&coreArea=&inquiryArea=&meetTimeMorning=&meetTimeAfternoon=&meetTimeEvening=&openCoursesOnly=",
-"https://api.colgate.edu/v1/courses/search?keyword=&termCode=201802&coreArea=&inquiryArea=&meetTimeMorning=&meetTimeAfternoon=&meetTimeEvening=&openCoursesOnly=",
-"https://api.colgate.edu/v1/courses/search?keyword=&termCode=201901&coreArea=&inquiryArea=&meetTimeMorning=&meetTimeAfternoon=&meetTimeEvening=&openCoursesOnly=",
-"https://api.colgate.edu/v1/courses/search?keyword=&termCode=201902&coreArea=&inquiryArea=&meetTimeMorning=&meetTimeAfternoon=&meetTimeEvening=&openCoursesOnly=",
-"https://api.colgate.edu/v1/courses/search?keyword=&termCode=202001&coreArea=&inquiryArea=&meetTimeMorning=&meetTimeAfternoon=&meetTimeEvening=&openCoursesOnly=",
-"https://api.colgate.edu/v1/courses/search?keyword=&termCode=202002&coreArea=&inquiryArea=&meetTimeMorning=&meetTimeAfternoon=&meetTimeEvening=&openCoursesOnly=",
-]
+semester_links = open("colgate_links.txt", "r").read()
+semester_links = semester_links.split(";")
+
 
 json_arr = []
 
@@ -120,8 +110,8 @@ for x in result_dict:
 #print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
 #print()
 
-db.printingValues("200402.json")
-db.printingValues("201402.json")
+#db.printingValues("200402.json")
+#db.printingValues("201402.json")
 
 
 #Some useless crap for now
