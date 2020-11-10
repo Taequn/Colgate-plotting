@@ -66,10 +66,8 @@ department_dict = {
 semester_links = open("colgate_links.csv", "r").read()
 semester_links = semester_links.split(";")
 
+#printing classes for each semester through Fall 2015 to Spring 2021
 
-json_arr = []
-
-"""
 for link in range(len(semester_links)):
 	page = requests.get(semester_links[link])
 	result_dict = json.loads(page.text)
@@ -84,44 +82,12 @@ for link in range(len(semester_links)):
 	counting_dict["Year"]=int(result_dict[0]["TERM_CODE"][:4])
 	counting_dict["Semester"]=int(result_dict[0]["TERM_CODE"][-1])
 
-	json_arr.append(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
-
 	print("Year: %s, %s semester" % (result_dict[0]["TERM_CODE"][:4], result_dict[0]["TERM_CODE"][-1]))
 	print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
 	print()
-"""
-#with open("data.json", "w") as outfile:
-#	json.dump(json_arr, outfile)
 
 
-#useless code — too lazy to remove
-page = requests.get(semester_links[-2])
-result_dict = json.loads(page.text)
-counting_dict = {}
 
-for x in department_dict:
-	counting_dict[x]=0
-
-for x in result_dict:
-	counting_dict[x["DISPLAY_KEY"][:4]]+=1
-
-
-#print("Fall 2020:\n")
-#print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
-#print()
-
-#db.printingValues("200402.json")
-#db.printingValues("201402.json")
-
-
-#Some useless crap for now
-#print("Term code: " + x["TERM_CODE"])
-#print("CRN: " + x["CRN"])
-#print("Key: " + x["DISPLAY_KEY"][:-2])
-#print("Department: " + department_dict[x["DISPLAY_KEY"][:4]])
-#print("Title: " + x["TITLE"])
-#print("Status: " + x["STATUS"])
-#print("Seats: " + x["SEATS"] + "\n")
 
 
 
