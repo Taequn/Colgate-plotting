@@ -3,8 +3,7 @@ import re
 import json
 import oldDB as db
 
-#capacity for classes
-#Neil Albert
+#check capacity of classes
 
 department_dict = {
 	"ALST": "Africana and Latin American Studies",
