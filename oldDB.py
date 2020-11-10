@@ -1,6 +1,7 @@
 import requests
 import re
 import json
+import os
 
 #capacity for classes
 #Neil Albert
@@ -63,11 +64,12 @@ department_dict = {
 	"LCTL": "Less Commonly Taught Languages",
 	"RUSS": "Russian",
 	"SOAN": "Sociology and Anthropology",
-	"ROLA": "Romance Languages and Literatures"
+	"ROLA": "Romance Languages and Literatures",
+	"MARS": "Medieval and Renaissance Studies"
 }
 
 def print_classes(year):
-	test_reading = json.loads(open("Database/"+year, "r").read())
+	test_reading = json.loads(open("Database/"+year+".json", "r").read())
 
 	counting_dict = {}
 	for x in department_dict:
@@ -77,7 +79,6 @@ def print_classes(year):
 		counting_dict[x["subject"]]+=1
 
 	print(test_reading['data'][0]['termDesc']+"\n")
-	#print("Total classes: " + str(test_reading['totalCount']))
 	print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
 
 
@@ -96,7 +97,45 @@ def print_students(year):
 	print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
 	print("Total enrollment in all classes: " + str(total_students))
 
-#print_students("199901")
+
+def print_classes_all():
+	directory = "Database/"
+	for filename in os.listdir(directory):
+		test_reading = json.loads(open("Database/"+filename, "r").read())
+
+		counting_dict = {}
+		for x in department_dict:
+			counting_dict[x]=0
+
+		for x in test_reading['data']:
+			counting_dict[x["subject"]]+=1
+
+		print(test_reading['data'][0]['termDesc']+"\n")
+		print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
+
+def print_students_all():
+	directory = "Database/"
+	for filename in os.listdir(directory):
+		total_students = 0
+		test_reading = json.loads(open("Database/"+filename, "r").read())
+
+		counting_dict = {}
+		for x in department_dict:
+			counting_dict[x]=0
+
+
+		for x in test_reading['data']:
+			counting_dict[x["subject"]]+=test_reading['data'][0]['enrollment']
+			total_students+=test_reading['data'][0]['enrollment']
+
+		print(test_reading['data'][0]['termDesc'])
+		print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
+		print("Total enrollment in all classes: " + str(total_students))
+		print()
+
+
+
+
 
 
 
