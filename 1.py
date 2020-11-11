@@ -67,11 +67,15 @@ semester_links = open("colgate_links.csv", "r").read()
 semester_links = semester_links.split(";")
 
 #prints classes/students for each semester through Fall 2015 to Spring 2021
-def counting_classes(classes=False, students=False):
+def counting_classes(classes=False, students=False, location=None):
 	complete_dict={}
 	
 	for link in range(len(semester_links)):
-		page = requests.get(semester_links[link])
+		if location==None:
+			page = requests.get(semester_links[link])
+		else:
+			page = requests.get(location)
+
 		result_dict = json.loads(page.text)
 		counting_dict = {}
 
@@ -98,7 +102,7 @@ def counting_classes(classes=False, students=False):
 	return complete_dict
 
 
-print(counting_classes(students=True)["201801"])
+#print(counting_classes(students=True)["201801"])
 #counting_classes()
 #print(counting_students()["201801"])
 

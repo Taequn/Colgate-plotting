@@ -68,82 +68,44 @@ department_dict = {
 	"MARS": "Medieval and Renaissance Studies"
 }
 
-def print_classes(year):
-	test_reading = json.loads(open("Database/"+year+".json", "r").read())
-
-	counting_dict = {}
-	for x in department_dict:
-		counting_dict[x]=0
-
-	for x in test_reading['data']:
-		counting_dict[x["subject"]]+=1
-
-	print(test_reading['data'][0]['termDesc']+"\n")
-	print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
-
-
-def print_students(year):
-	test_reading = json.loads(open("Database/"+year+".json", "r").read())
-	total_students = 0
-	counting_dict = {}
-	for x in department_dict:
-		counting_dict[x]=0
-
-	for x in test_reading['data']:
-		counting_dict[x["subject"]]+=test_reading['data'][0]['enrollment']
-		total_students+=test_reading['data'][0]['enrollment']
-
-	print(test_reading['data'][0]['termDesc']+"\n")
-	print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
-	print("Total enrollment in all classes: " + str(total_students))
-
-
-def print_classes_all():
+#returns all classes/students or does that for some specific year
+def access_data(classes=False, students=False, year=None):
 	directory = "Database/"
 	complete_dict={}
+	if year==None:
+		for filename in os.listdir(directory):
+			test_reading = json.loads(open("Database/"+filename, "r").read())
+			
+			counting_dict = {}
+			for x in department_dict:
+				counting_dict[x]=0
 
-	for filename in os.listdir(directory):
-		test_reading = json.loads(open("Database/"+filename, "r").read())
+			if classes:
+				for x in test_reading['data']:
+					counting_dict[x["subject"]]+=1
+			elif students:
+				for x in test_reading['data']:
+					counting_dict[x["subject"]]+=int(x['enrollment'])
 
+			complete_dict[test_reading['data'][0]['term']]=counting_dict.items()
+			#print(test_reading['data'][0]['termDesc']+"\n")
+			#print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
+	else:
+		test_reading = json.loads(open("Database/"+year+".json", "r").read())
 		counting_dict = {}
 		for x in department_dict:
 			counting_dict[x]=0
 
-		for x in test_reading['data']:
-			counting_dict[x["subject"]]+=1
-
-		complete_dict[test_reading['data'][0]['term']]=counting_dict.items()
-		#print(test_reading['data'][0]['termDesc']+"\n")
-		#print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
-
-	return complete_dict
-
-
-def print_students_all():
-	directory = "Database/"
-	
-	complete_dict = {}
-	for filename in os.listdir(directory):
-		total_students = 0
-		test_reading = json.loads(open("Database/"+filename, "r").read())
-
-		counting_dict = {}
-		for x in department_dict:
-			counting_dict[x]=0
-
-
-		for x in test_reading['data']:
-			counting_dict[x["subject"]]+=test_reading['data'][0]['enrollment']
-			total_students+=test_reading['data'][0]['enrollment']
-
+		if classes:
+			for x in test_reading['data']:
+				counting_dict[x["subject"]]+=1
+		elif students:
+			for x in test_reading['data']:
+				counting_dict[x["subject"]]+=int(x['enrollment'])
 		
-		complete_dict[test_reading['data'][0]['term']]=counting_dict.items()
-		#print(test_reading['data'][0]['termDesc'])
-		#print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
-		#print("Total enrollment in all classes: " + str(total_students))
-		#print()
-	return complete_dict
+		return counting_dict
 
+	return complete_dict
 
 
 
