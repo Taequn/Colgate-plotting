@@ -1,10 +1,9 @@
 import requests
 import re
 import json
-import os
+import oldDB as db
 
-#capacity for classes
-#Neil Albert
+#check capacity of classes
 
 department_dict = {
 	"ALST": "Africana and Latin American Studies",
@@ -61,51 +60,56 @@ department_dict = {
 	"WRIT": "Writing and Rhetoric",
 	"FSEM": "First year seminar",
 	"HUMN": "Test",
-	"LCTL": "Less Commonly Taught Languages",
-	"RUSS": "Russian",
-	"SOAN": "Sociology and Anthropology",
-	"ROLA": "Romance Languages and Literatures",
-	"MARS": "Medieval and Renaissance Studies"
+	"LCTL": "Less Commonly Taught Languages"
 }
 
-#returns all classes/students or does that for some specific year
-def access_data(classes=False, students=False, year=None):
-	directory = "Database/"
+semester_links = open("colgate_links.csv", "r").read()
+semester_links = semester_links.split(";")
+
+#prints classes/students for each semester through Fall 2015 to Spring 2021
+def access_data(classes=False, students=False, location=None):
 	complete_dict={}
-	if year==None:
-		for filename in sorted(os.listdir(directory)):
-			test_reading = json.loads(open("Database/"+filename, "r").read())
-			
-			counting_dict = {}
-			for x in department_dict:
-				counting_dict[x]=0
+	
+	for link in range(len(semester_links)):
+		if location==None:
+			page = requests.get(semester_links[link])
+		else:
+			page = requests.get(location)
 
-			if classes:
-				for x in test_reading['data']:
-					counting_dict[x["subject"]]+=1
-			elif students:
-				for x in test_reading['data']:
-					counting_dict[x["subject"]]+=int(x['enrollment'])
-
-			complete_dict[test_reading['data'][0]['term']]=counting_dict.items()
-			#print(test_reading['data'][0]['termDesc']+"\n")
-			#print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
-	else:
-		test_reading = json.loads(open("Database/"+year+".json", "r").read())
+		result_dict = json.loads(page.text)
 		counting_dict = {}
+
 		for x in department_dict:
 			counting_dict[x]=0
 
-		if classes:
-			for x in test_reading['data']:
-				counting_dict[x["subject"]]+=1
-		elif students:
-			for x in test_reading['data']:
-				counting_dict[x["subject"]]+=int(x['enrollment'])
-		
-		return counting_dict
+		if (classes==True):
+			for x in result_dict:
+				counting_dict[x["DISPLAY_KEY"][:4]]+=1
 
+		elif (students==True):
+			for x in result_dict:
+				counting_dict[x["DISPLAY_KEY"][:4]]+=int(x["SEATS"][:x["SEATS"].find("/")])
+				#print(int(x["SEATS"][:x["SEATS"].find("/")]))
+
+		elif (classes==False and students==False):
+			return "You gotta make either classes or students True in parameters"
+
+		complete_dict[result_dict[0]["TERM_CODE"]]=counting_dict.items()
+
+	#print("Year: %s, %s semester" % (result_dict[0]["TERM_CODE"][:4], result_dict[0]["TERM_CODE"][-1]))
+	#print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
+	#print()
 	return complete_dict
+
+
+#print(counting_classes(students=True)["201801"])
+#counting_classes()
+#print(counting_students()["201801"])
+
+
+
+
+		
 
 
 
