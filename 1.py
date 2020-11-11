@@ -66,8 +66,10 @@ department_dict = {
 semester_links = open("colgate_links.csv", "r").read()
 semester_links = semester_links.split(";")
 
-#prints classes for each semester through Fall 2015 to Spring 2021
-def counting_classes():
+#prints classes/students for each semester through Fall 2015 to Spring 2021
+def counting_classes(classes=False, students=False):
+	complete_dict={}
+	
 	for link in range(len(semester_links)):
 		page = requests.get(semester_links[link])
 		result_dict = json.loads(page.text)
@@ -76,45 +78,34 @@ def counting_classes():
 		for x in department_dict:
 			counting_dict[x]=0
 
-		for x in result_dict:
-			counting_dict[x["DISPLAY_KEY"][:4]]+=1
+		if (classes==True):
+			for x in result_dict:
+				counting_dict[x["DISPLAY_KEY"][:4]]+=1
 
-		counting_dict["Year"]=int(result_dict[0]["TERM_CODE"][:4])
-		counting_dict["Semester"]=int(result_dict[0]["TERM_CODE"][-1])
+		elif (students==True):
+			for x in result_dict:
+				counting_dict[x["DISPLAY_KEY"][:4]]+=int(x["SEATS"][:x["SEATS"].find("/")])
+				#print(int(x["SEATS"][:x["SEATS"].find("/")]))
 
-		print("Year: %s, %s semester" % (result_dict[0]["TERM_CODE"][:4], result_dict[0]["TERM_CODE"][-1]))
-		print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
-		print()
+		elif (classes==False and students==False):
+			return "You gotta make either classes or students True in parameters"
 
-#prints number of students in each department through Fall 2015 to Spring 2021
-def counting_students():
-	for link in range(len(semester_links)):
-		page = requests.get(semester_links[link])
-		result_dict = json.loads(page.text)
-		total_students = 0
+		complete_dict[result_dict[0]["TERM_CODE"]]=counting_dict.items()
 
-		counting_dict = {}
-
-		for x in department_dict:
-			counting_dict[x]=0
-
-		for x in result_dict:
-			counting_dict[x["DISPLAY_KEY"][:4]]+=int(result_dict[0]["SEATS"][-1])
-			total_students+=int(result_dict[0]["SEATS"][-1])
+	#print("Year: %s, %s semester" % (result_dict[0]["TERM_CODE"][:4], result_dict[0]["TERM_CODE"][-1]))
+	#print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
+	#print()
+	return complete_dict
 
 
-		print("Year: %s, %s semester" % (result_dict[0]["TERM_CODE"][:4], result_dict[0]["TERM_CODE"][-1]))
-		print(sorted(counting_dict.items(), key=lambda x: x[1], reverse=True))
-		print("Total enrollment in all classes: " + str(total_students))
-		print()
-
-
+print(counting_classes(students=True)["201801"])
 #counting_classes()
-#counting_students()
+#print(counting_students()["201801"])
 
 
 
 
+		
 
 
 
