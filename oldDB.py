@@ -103,9 +103,8 @@ def access_data(classes=False, students=False, year=None):
 			for x in test_reading['data']:
 				counting_dict[x["subject"]]+=int(x['enrollment'])
 		
-		return counting_dict
+		return complete_dict
 
 	return complete_dict
-
 
 
