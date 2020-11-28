@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
-import oldDB as old
-import newDB as new
+import old_db as old
+import new_db as new
 
 econ_values = []
 test_values = []
