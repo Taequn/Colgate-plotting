@@ -1,7 +1,7 @@
 import requests
 import re
 import json
-import oldDB as db
+import old_db as db
 
 #check capacity of classes
 
