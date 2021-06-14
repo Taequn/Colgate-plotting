@@ -20,7 +20,7 @@ for x in class_dict_old:
 	test1_values.append(dict(class_dict_old[x])["ENGL"])
 	test2_values.append(dict(class_dict_old[x])["CHEM"])
 	test3_values.append(dict(class_dict_old[x])["BIOL"])
-	test4_values.append(dict(class_dict_old[x])["COSC"])
+	test4_values.append(dict(class_dict_old[x])["WRIT"])
 
 
 for x in class_dict_new:
@@ -30,7 +30,7 @@ for x in class_dict_new:
 	test1_values.append(dict(class_dict_new[x])["ENGL"])
 	test2_values.append(dict(class_dict_new[x])["CHEM"])
 	test3_values.append(dict(class_dict_new[x])["BIOL"])
-	test4_values.append(dict(class_dict_new[x])["COSC"])
+	test4_values.append(dict(class_dict_new[x])["WRIT"])
 
 
 plot1 = plt.figure(1)
@@ -40,7 +40,7 @@ plt.plot(year_values, test1_values, "g")
 plt.plot(year_values, test2_values, "y")
 plt.plot(year_values, test3_values, "b")
 plt.plot(year_values, test4_values, "#17becf")
-plt.legend(["History", "Philosophy", "English", "Chemistry", "Biology", "Computer Science"])
+plt.legend(["History", "Philosophy", "English", "Chemistry", "Biology", "Writing & Rhetoric"])
 plt.ylabel('Number of classes')
 plt.xlabel('Year (YYYY) + Semester (01/02)')
 plt.xticks([x for x in range(0,len(year_values),7)])
