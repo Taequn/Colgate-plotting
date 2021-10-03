@@ -11,3 +11,5 @@ def get_data():
             df = pd.concat([df, pd.json_normalize(jsondata['data'])])
     df = df.drop(["meetingsFaculty", "faculty"], axis=1)
     df.to_csv('all_data.csv')
+
+get_data()
