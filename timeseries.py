@@ -39,8 +39,36 @@ def make_timeseries(data, selected_subjects):
     
     return p
 
+def make_entrollment_timeseries(data, selected_subjects):
+    filtered_data = data[data['subject'].isin(selected_subjects)]
+
+    # Convert filtered_data['subject'] to a Series if it's not already
+    if isinstance(filtered_data['subject'], pd.DataFrame):
+        filtered_data['subject'] = filtered_data['subject'].iloc[:, 0]
+    
+    enrollment_counts = filtered_data.groupby(['term', 'subject'])['enrollment'].sum().reset_index()
+    enrollment_counts['term_date'] = enrollment_counts['term'].apply(term_to_datetime)
+
+    enrollment_counts['term'] = pd.Categorical(
+        enrollment_counts['term'],
+        categories=enrollment_counts.sort_values('term_date')['term'].unique(),
+        ordered=True
+    )
+    
+    p = (ggplot(enrollment_counts)
+     + aes(x='term', y='enrollment', group='subject', color='subject')
+     + geom_line()
+     + theme_bw()
+     + theme(axis_text_x=element_text(angle=45))  # Rotate x-axis labels
+    )
+    
+    return p
+    
+    
+    
+
 if __name__ == "__main__":
     data = pd.read_csv('processed_data/data.csv')
     #Choose only ALST and BIOL
     selected_subjects = ['ALST', 'BIOL']
-    print(make_timeseries(data, selected_subjects))
+    print(make_entrollment_timeseries(data, selected_subjects))
