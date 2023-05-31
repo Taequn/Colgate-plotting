@@ -33,7 +33,12 @@ def make_timeseries(data, selected_subjects):
         aes(x='term', y='counts', group='subject', color='subject') +
         geom_line() + 
         theme_bw() +
-        theme(axis_text_x=element_text(angle=45))  # Rotate x-axis labels
+        theme(axis_text_x=element_text(angle=45)) + 
+        labs(
+            x = "Term",
+            y = "Number of Offered Classes",
+            color = "Department"
+        )
     )
 
     
@@ -59,7 +64,12 @@ def make_entrollment_timeseries(data, selected_subjects):
      + aes(x='term', y='enrollment', group='subject', color='subject')
      + geom_line()
      + theme_bw()
-     + theme(axis_text_x=element_text(angle=45))  # Rotate x-axis labels
+     + theme(axis_text_x=element_text(angle=45))
+     + labs(
+        y = 'Number of Enrolled Students',
+        x = "Term",
+        color = "Department"
+     )
     )
     
     return p

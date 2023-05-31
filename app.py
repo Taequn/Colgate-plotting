@@ -20,15 +20,16 @@ CLASSES = data['subject'].unique()
 timeseries_type = st.sidebar.radio(label="Choose the type of timeseries", options=['Enrollment', 'Classes Offered'])
 selected_classes = st.sidebar.multiselect('Select classes', CLASSES)
 
-st.title("Time Series Plot")
-
 if timeseries_type == 'Classes Offered':
+    st.title('Number of Offered Classes')
+    st.write("This plot shows the number of classes offered in each semester.")
     p = make_timeseries(data, selected_classes)
 else:
+    st.title('Number of Enrolled Students')
+    st.write("This plot shows the number of enrolled students in each semester.")
     p = make_entrollment_timeseries(data, selected_classes)
-
 
 if len(selected_classes) > 0:
     st.pyplot(p.draw(p))
 else:
-    st.write("Please select at least one class.")
+    st.warning("Please select at least one class.")
