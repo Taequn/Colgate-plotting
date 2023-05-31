@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from plotnine import *
-from timeseries import make_timeseries, make_entrollment_timeseries
+from plots.timeseries import make_timeseries, make_entrollment_timeseries
 
 # Load data
 @st.cache_data
