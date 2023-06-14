@@ -73,12 +73,44 @@ def make_entrollment_timeseries(data, selected_subjects):
     )
     
     return p
+
+def make_major_timeseries(data, selected_subjects):
+    filtered_data = data[data['subject'].isin(selected_subjects)]
+
+    # Convert filtered_data['subject'] to a Series if it's not already
+    if isinstance(filtered_data['subject'], pd.DataFrame):
+        filtered_data['subject'] = filtered_data['subject'].iloc[:, 0]
+
+    # Group by year and subject, summing the majors_enrolled column
+    counts = filtered_data.groupby(['year', 'subject'])['majors_enrolled'].sum().reset_index()
+    counts['year'] = pd.Categorical(
+        counts['year'],
+        categories=counts['year'].unique(),
+        ordered=True
+    )
+
+    # Plot data
+    p = (
+        ggplot(counts) +
+        aes(x='year', y='majors_enrolled', group='subject', color='subject') +
+        geom_line() +
+        theme_bw() +
+        theme(axis_text_x=element_text(angle=45)) +
+        labs(
+            x = "Year",
+            y = "Number of Majors Enrolled",
+            color = "Subject"
+        )
+    )
+
+    return p
+
     
     
     
 
 if __name__ == "__main__":
-    data = pd.read_csv('processed_data/data.csv')
+    data = pd.read_csv('processed_data/enrolled_majors.csv')
     #Choose only ALST and BIOL
     selected_subjects = ['ALST', 'BIOL']
-    print(make_entrollment_timeseries(data, selected_subjects))
+    print(make_major_timeseries(data, ['REST']))

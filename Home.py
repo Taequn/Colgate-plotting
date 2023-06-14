@@ -3,6 +3,11 @@ import pandas as pd
 from plotnine import *
 from plots.timeseries import make_timeseries, make_entrollment_timeseries
 
+st.set_page_config(
+    page_title="Enrollment and Classes Offered",
+    page_icon="📚",
+)
+
 # Load data
 @st.cache_data
 def load_data():
